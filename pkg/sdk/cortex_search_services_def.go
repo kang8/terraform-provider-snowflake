@@ -36,6 +36,7 @@ var CortexSearchServiceDef = g.NewInterface(
 		).
 		Identifier("Warehouse", g.KindOfT[AccountObjectIdentifier](), g.IdentifierOptions().Equals().Required().SQL("WAREHOUSE")).
 		TextAssignment("TARGET_LAG", g.ParameterOptions().SingleQuotes().Required()).
+		OptionalTextAssignment("EMBEDDING_MODEL", g.ParameterOptions().SingleQuotes()).
 		OptionalComment().
 		PredefinedQueryStructField("QueryDefinition", "string", g.ParameterOptions().NoEquals().NoQuotes().Required().SQL("AS")).
 		// Validations

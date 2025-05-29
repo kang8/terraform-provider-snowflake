@@ -28,6 +28,7 @@ type CreateCortexSearchServiceOptions struct {
 	Attributes          *Attributes             `ddl:"keyword"`
 	Warehouse           AccountObjectIdentifier `ddl:"identifier,equals" sql:"WAREHOUSE"`
 	TargetLag           string                  `ddl:"parameter,single_quotes" sql:"TARGET_LAG"`
+	EmbeddingModel      *string                 `ddl:"parameter,single_quotes" sql:"EMBEDDING_MODEL"`
 	Comment             *string                 `ddl:"parameter,single_quotes" sql:"COMMENT"`
 	QueryDefinition     string                  `ddl:"parameter,no_quotes,no_equals" sql:"AS"`
 }

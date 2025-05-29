@@ -60,6 +60,12 @@ var cortexSearchServiceSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Specifies the maximum target lag time for the Cortex search service.",
 	},
+	"embedding_model": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		ForceNew:    true,
+		Description: "Specifies the embedding model to use for the Cortex search service.",
+	},
 	"comment": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -166,6 +172,9 @@ func CreateCortexSearchService(ctx context.Context, d *schema.ResourceData, meta
 	request := sdk.NewCreateCortexSearchServiceRequest(id, on, warehouse, target_lag, query)
 	if v, ok := d.GetOk("comment"); ok {
 		request.WithComment(v.(string))
+	}
+	if v, ok := d.GetOk("embedding_model"); ok {
+		request.WithEmbeddingModel(v.(string))
 	}
 	if v, ok := d.GetOk("attributes"); ok && len(v.(*schema.Set).List()) > 0 {
 		attributes := sdk.AttributesRequest{

@@ -77,6 +77,7 @@ func (r *CreateCortexSearchServiceRequest) toOpts() *CreateCortexSearchServiceOp
 
 		Warehouse:       r.Warehouse,
 		TargetLag:       r.TargetLag,
+		EmbeddingModel:  r.EmbeddingModel,
 		Comment:         r.Comment,
 		QueryDefinition: r.QueryDefinition,
 	}

@@ -72,6 +72,28 @@ func TestInt_CortexSearchServices(t *testing.T) {
 		require.Equal(t, comment, cortexSearchServiceById.Comment)
 	})
 
+	t.Run("create: with embedding model", func(t *testing.T) {
+		table, tableCleanup := testClientHelper().Table.CreateWithPredefinedColumns(t)
+		t.Cleanup(tableCleanup)
+
+		name := testClientHelper().Ids.RandomSchemaObjectIdentifier()
+		embeddingModel := "snowflake-arctic-embed-m-v1.5"
+		err := client.CortexSearchServices.Create(ctx, sdk.NewCreateCortexSearchServiceRequest(name, on, testClientHelper().Ids.WarehouseId(), targetLag, buildQuery(table.ID())).WithEmbeddingModel(embeddingModel))
+		require.NoError(t, err)
+		t.Cleanup(func() {
+			err = client.CortexSearchServices.Drop(ctx, sdk.NewDropCortexSearchServiceRequest(name))
+			require.NoError(t, err)
+		})
+
+		cortexSearchServiceById, err := client.CortexSearchServices.ShowByID(ctx, name)
+		require.NoError(t, err)
+		require.NotNil(t, cortexSearchServiceById)
+		require.Equal(t, name.Name(), cortexSearchServiceById.Name)
+
+		// Note: The SHOW command doesn't return embedding model information,
+		// but the service should be created successfully with the specified model
+	})
+
 	t.Run("describe: when cortex search service exists", func(t *testing.T) {
 		id := testClientHelper().Ids.RandomSchemaObjectIdentifier()
 		cortexSearchService := createCortexSearchService(t, id)
